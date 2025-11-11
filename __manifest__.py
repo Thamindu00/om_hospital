@@ -1,5 +1,4 @@
 # Define a Dictionary
-
 {
     'name': 'Hospital Management System',
     'author': 'Thamindu Rajakaruna',
@@ -8,8 +7,10 @@
     'depends': ['mail'],
     'data': [
         'security/ir.model.access.csv',
+        'data/sequence.xml',
         'views/patient_views.xml',
         'views/patient_readonly_views.xml',
+        'views/appointment_views.xml',
         'views/menu.xml'
     ]
 }
