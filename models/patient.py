@@ -10,7 +10,7 @@ class HospitalPatient(models.Model): #Creating new class by models.Model
     name = fields.Char(
         string='Patient Name', required=True, tracking=True
     )
-    date_of_birth = fields.Date(string='DOB', tracking=True)
+    date_of_birth = fields.Date(string='DOB', tracking=True) #making tracking true for the display the changes in the chatter
     gender = fields.Selection(
         [('male', 'Male'), ('female', 'Female')],
         string='Gender', tracking=True
