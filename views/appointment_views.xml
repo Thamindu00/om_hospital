@@ -20,6 +20,17 @@
         <field name="model">hospital.appointment</field>
         <field name="arch" type="xml">
             <form string="Appointment">
+                <header>
+                    <!-- * If the button type is object it will call a python function with the given name inside this model
+                        * Right now on clicking this button system will look for a function with the name `action_confirm`
+                            inside `hospital.appointment` model, so have to define the action|_confirm function inside the
+                            `hospital.appointment` model
+                            // If not on upgrading we will get an error
+                     -->
+                    <button name="action_confirm" type="object" string="Confirm"/>
+                    <!--Newly added the status bar for track the progress-->
+                    <field name="state" widget="statusbar" options="{'clickable': '1'}"/>
+                </header>
                 <sheet>
                     <group>
                         <group>
@@ -32,6 +43,7 @@
                         </group>
                     </group>
                 </sheet>
+                <!-- Mail thread inherited in here/ chatter added -->
                 <div class="oe_chatter">
                     <field name="message_follower_ids" groups="base.group_user"/>
                     <field name="message_ids"/>
