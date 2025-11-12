@@ -12,6 +12,10 @@ class HospitalAppointment(models.Model): #Creating new class by models.Model
     patient_id = fields.Many2one('hospital.patient', string="Patient", required=True)
     date_appointment = fields.Date(string="Date")
     note = fields.Text(string="Note")
+    state = fields.Selection([
+        ('draft', 'Draft'), ('confirmed', 'Confirmed'), ('ongoing', 'Ongoing'),
+        ('done', 'Done'), ('cancel', 'Cancelled')
+    ], default='draft')
 
     @api.model_create_multi
     # Added below new 2 lines of code
@@ -29,3 +33,8 @@ class HospitalAppointment(models.Model): #Creating new class by models.Model
                 # Assign that value to the reference field. Then that value pass to the odoo method & it will create a sequence value
                 vals['reference'] = self.env['ir.sequence'].next_by_code('hospital.appointment') # Need next sequential value of this sequence
         return super().create(vals_list)
+
+    # In ORM self is looking for the current record set, so can assume self will be giving the current record
+    def action_confirm(self):
+        for rec in self:
+            print("Button is clicked", self, rec)
