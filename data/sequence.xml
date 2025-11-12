@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Setting not to update as a true, means think when we update the prefix as 'AP' from the UI & avoid the next execution
+        start as an HP -->
     <data noupdate="1">
         
         <record id="seq_hospital_appointment" model="ir.sequence">
