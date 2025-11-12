@@ -37,4 +37,26 @@ class HospitalAppointment(models.Model): #Creating new class by models.Model
     # In ORM self is looking for the current record set, so can assume self will be giving the current record
     def action_confirm(self):
         for rec in self:
-            print("Button is clicked", self, rec)
+            # Inside rec we have record set, then by using the dot operator writing value to the `state` field
+            # Here assigning value to that field
+            rec.state = 'confirmed'
+
+            # Print as "Button is clicked hospital.appointment(10,) hospital.appointment(10,)"
+            # print("Button is clicked", self, rec)
+
+            # Print as "Reference is... HP00004"
+            # print("Reference is...", self.reference)
+
+            # Same as above we can access the other fields data too
+            # print("Note: ", self.note)
+
+    def action_ongoing(self):
+        for rec in self:
+            rec.state = 'ongoing'
+    def action_done(self):
+        for rec in self:
+            rec.state = 'done'
+    def action_cancel(self):
+        for rec in self:
+            rec.state = 'cancel'
+

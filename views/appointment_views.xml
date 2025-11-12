@@ -28,6 +28,10 @@
                             // If not on upgrading we will get an error
                      -->
                     <button name="action_confirm" type="object" string="Confirm"/>
+                    <button name="action_ongoing" type="object" string="Ongoing"/>
+                    <button name="action_done" type="object" string="Done"/>
+                    <button name="action_cancel" type="object" string="Cancel"/>
+
                     <!--Newly added the status bar for track the progress-->
                     <field name="state" widget="statusbar" options="{'clickable': '1'}"/>
                 </header>
