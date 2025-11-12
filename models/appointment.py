@@ -15,7 +15,7 @@ class HospitalAppointment(models.Model): #Creating new class by models.Model
     state = fields.Selection([
         ('draft', 'Draft'), ('confirmed', 'Confirmed'), ('ongoing', 'Ongoing'),
         ('done', 'Done'), ('cancel', 'Cancelled')
-    ], default='draft')
+    ], default='draft', tracking=True)
 
     @api.model_create_multi
     # Added below new 2 lines of code
