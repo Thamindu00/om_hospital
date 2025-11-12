@@ -27,13 +27,16 @@
                             `hospital.appointment` model
                             // If not on upgrading we will get an error
                      -->
-                    <button name="action_confirm" type="object" string="Confirm"/>
-                    <button name="action_ongoing" type="object" string="Ongoing"/>
-                    <button name="action_done" type="object" string="Done"/>
-                    <button name="action_cancel" type="object" string="Cancel"/>
+                    <button name="action_confirm" type="object" string="Confirm" invisible="state != 'draft'" class="oe_highlight"/>
+                    <!-- If state value is not equal to `confirmed` the button has to be invisible -->
+                    <!-- Added oe_highlight to the class for highlight the buttons -->
+                    <button name="action_ongoing" type="object" string="Ongoing" invisible="state != 'confirmed'" class="oe_highlight"/>
+                    <button name="action_done" type="object" string="Done" invisible="state != 'ongoing'" class="oe_highlight"/>
+                    <button name="action_cancel" type="object" string="Cancel" invisible="state == 'done'"/>
 
-                    <!--Newly added the status bar for track the progress-->
-                    <field name="state" widget="statusbar" options="{'clickable': '1'}"/>
+                    <!--Newly added the status bar for track the progress, added statusbar_visible for avoid to display the cancel status
+                    in unwanted progress stages-->
+                    <field name="state" widget="statusbar" options="{'clickable': '1'}" statusbar_visible="draft,confirmed,ongoing,done"/>
                 </header>
                 <sheet>
                     <group>
