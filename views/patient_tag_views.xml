@@ -6,7 +6,11 @@
         <field name="name">patient.tag.tree</field>
         <field name="model">patient.tag</field>
         <field name="arch" type="xml">
-            <tree string="Patient Tags">
+            <!--
+            * we need to directly enter the `Tree` view. so for that we have to use editable attribute
+            * so there are 2 types of editable attributes - bottom and top inside tree tag
+             -->
+            <tree string="Patient Tags" editable="top">
                 <field name="name"/>
             </tree>
         </field>
