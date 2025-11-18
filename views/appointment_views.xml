@@ -49,6 +49,14 @@
                             <field name="note"/>
                         </group>
                     </group>
+                    <!--   below field automatically looking for the tree view if we're not put the tree tag inside the field tag -->
+<!--                       If we add the tree tag below we can override the tree tag, neither it will display appointment_line_views.xml tree -->
+                    <field name="appointment_line_ids">
+                        <tree editable="">
+                            <field name="product_id"/>
+                            <field name="qty"/>
+                        </tree>
+                    </field>>
                 </sheet>
                 <!-- Mail thread inherited in here/ chatter added -->
                 <div class="oe_chatter">
