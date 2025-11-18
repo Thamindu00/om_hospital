@@ -52,7 +52,8 @@
                     <!--   below field automatically looking for the tree view if we're not put the tree tag inside the field tag -->
 <!--                       If we add the tree tag below we can override the tree tag, neither it will display appointment_line_views.xml tree -->
                     <field name="appointment_line_ids">
-                        <tree editable="">
+                        <tree editable=""> <!-- if we don't put anything for editable attribute then it will popup for
+                        enter the data, if we put bottom for editable attribute then have to enter the data below of the current lines-->
                             <field name="product_id"/>
                             <field name="qty"/>
                         </tree>
