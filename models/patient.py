@@ -18,9 +18,6 @@ class HospitalPatient(models.Model): #Creating new class by models.Model
     # In many to many we have to use the `s` for the field name
     # This is how to define the many to many field
     tag_ids = fields.Many2many( # remember the Many2many is case-sensitive
-        'patient.tag','patient_tag_rel','patient_id','tag_id',string="Tags"
-    )
-
-    product_ids = fields.Many2many(  # remember the Many2many is case-sensitive
-        'product.product', string="Products"
+        #'patient.tag','patient_tag_rel','patient_id','tag_id',string="Tags" # patient_tag_rel is the relation name
+        'patient.tag', string="Tags"
     )
