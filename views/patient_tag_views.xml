@@ -11,6 +11,7 @@
             * so there are 2 types of editable attributes - bottom and top inside tree tag
              -->
             <tree string="Patient Tags" editable="top">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
             </tree>
         </field>
