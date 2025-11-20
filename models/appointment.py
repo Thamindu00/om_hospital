@@ -5,6 +5,9 @@ class HospitalAppointment(models.Model): #Creating new class by models.Model
     _name = 'hospital.appointment'
     _inherit = ['mail.thread']
     _description = 'Hospital Appointment'
+    _rec_names_search = ['reference', 'patient_id'] # have to search reference field, and have to search on patient_id.
+                                            # Saying need to search based on the patient name as well as the reference value.
+                                            # we can add what we want to search as a list in many to one field.
     _rec_name = 'patient_id' # Show the rec name of the model as the value from patient id field
 
     reference = fields.Char(string="Reference", default='New')
