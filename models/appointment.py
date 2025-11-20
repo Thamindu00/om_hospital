@@ -1,5 +1,7 @@
 # Patient's data come here
 from odoo import api, fields, models
+from odoo.odoo.tools.populate import compute
+
 
 class HospitalAppointment(models.Model): #Creating new class by models.Model
     _name = 'hospital.appointment'
@@ -13,7 +15,7 @@ class HospitalAppointment(models.Model): #Creating new class by models.Model
     reference = fields.Char(string="Reference", default='New')
     # We need a lookup view, so we create a many-to-one field in odoo - we can see list of patients
     patient_id = fields.Many2one('hospital.patient', string="Patient", required=True)
-    date_appointment = fields.Date(string="Date")
+    date_appointment = fields.Date(string="Appointment Date")
     note = fields.Text(string="Note")
     state = fields.Selection([
         ('draft', 'Draft'), ('confirmed', 'Confirmed'), ('ongoing', 'Ongoing'),
@@ -21,6 +23,13 @@ class HospitalAppointment(models.Model): #Creating new class by models.Model
     ], default='draft', tracking=True)
     appointment_line_ids = fields.One2many(
         'hospital.appointment.line', 'appointment_id', string="Lines"
+    )
+    # added new total_qty db field to the hospital_appointment db table, actually non stored computed field,
+    # there are 2 types of computed fields, 1] stored in the database. 2] not stored in the db, but it will
+        # compute on the fly whenever we load it, it will compute.
+    # But we can make this to stored in the database by adding `store=True` and put the dependency
+    total_qty = fields.Float(
+        compute='_compute_total_qty', string="Total Quantity", store=True
     )
 
     @api.model_create_multi
@@ -39,6 +48,33 @@ class HospitalAppointment(models.Model): #Creating new class by models.Model
                 # Assign that value to the reference field. Then that value pass to the odoo method & it will create a sequence value
                 vals['reference'] = self.env['ir.sequence'].next_by_code('hospital.appointment') # Need next sequential value of this sequence
         return super().create(vals_list)
+
+    # based on the one-to-many line and quantity field in the one-to-many line, we have to recompute the function
+    @api.depends('appointment_line_ids', 'appointment_line_ids.qty')
+    # newly added function for calculate the `total quantity`
+    def _compute_total_qty(self):
+        for rec in self:
+            # total_qty = 0
+            # print(rec.appointment_line_ids)
+            # below code line will print rec appointment lines id num
+            # So we have to do the iteration over a for loop
+            # for line in rec.appointment_line_ids:
+                # print("line value", line.qty)
+                # total_qty = total_qty + line.qty
+                # total_qty += line.qty
+            # rec.total_qty = total_qty
+
+    #       The same thing that we have done above by the code block which start from `total_qty = 0` to `rec.total_qty = total_qty`
+    #       we can implement that in other way using mapped method, just single code line
+    # ********************* SPECIAL ****************************************************
+            print(rec.appointment_line_ids.mapped('qty'))
+            rec.total_qty = sum(rec.appointment_line_ids.mapped('qty'))
+    #************************************************************************************
+
+    def _compute_display_name(self):
+        for rec in self:
+            print("values are: ", f"[{rec.reference}] {rec.patient_id.name}")
+            rec.display_name = f"[{rec.reference}] {rec.patient_id.name}"
 
     # In ORM self is looking for the current record set, so can assume self will be giving the current record
     def action_confirm(self):
@@ -72,6 +108,6 @@ class HospitalAppointmentLine(models.Model): #Creating new class by models.Model
 
     # first the main field inside one to many, we have to create many to one field to the parent model
     appointment_id = fields.Many2one('hospital.appointment', string="Appointment")
-    product_id = fields.Many2one('product.product', string="Product")
+    product_id = fields.Many2one('product.product', string="Product", required=True)
     qty = fields.Float(string="Quantity")
 
