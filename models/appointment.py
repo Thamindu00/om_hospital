@@ -31,6 +31,9 @@ class HospitalAppointment(models.Model): #Creating new class by models.Model
     total_qty = fields.Float(
         compute='_compute_total_qty', string="Total Quantity", store=True
     )
+    # below is non-stored related field, in that no need to put string attribute again, to store we have to add store=True
+    # date_of_birth = fields.Date(string="DOB", related='patient_id.date_of_birth')
+    date_of_birth = fields.Date(related='patient_id.date_of_birth', store=True)
 
     @api.model_create_multi
     # Added below new 2 lines of code
