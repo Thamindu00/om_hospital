@@ -10,6 +10,7 @@
                     # product.product model is coming from the product module in Odoo
     ],
     'data': [
+        'security/security.xml',
         'security/ir.model.access.csv',
         'data/sequence.xml',
         'views/patient_views.xml',
