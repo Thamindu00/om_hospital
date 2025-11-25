@@ -1,7 +1,5 @@
 # Patient's data come here
 from odoo import api, fields, models
-from odoo.odoo.tools.populate import compute
-
 
 class HospitalAppointment(models.Model): #Creating new class by models.Model
     _name = 'hospital.appointment'
@@ -13,8 +11,16 @@ class HospitalAppointment(models.Model): #Creating new class by models.Model
     _rec_name = 'patient_id' # Show the rec name of the model as the value from patient id field
 
     reference = fields.Char(string="Reference", default='New')
-    # We need a lookup view, so we create a many-to-one field in odoo - we can see list of patients
-    patient_id = fields.Many2one('hospital.patient', string="Patient", required=True)
+    # We need a lookup view, so we create a many-to-one field in odoo - we can see list of patients, newly changed required to
+    # true and ondelete to restrict to avoid the data vanish when do the patient deletion if there is use of them in appointments
+    patient_id = fields.Many2one('hospital.patient', string="Patient", required=True, ondelete='restrict')
+
+    # on delete `cascade` for delete the related appointments too when deletion of the patient
+    # patient_id = fields.Many2one('hospital.patient', string="Patient", required=True, ondelete='cascade')
+
+    # default is ondelete = 'set null' and when use of the set null we cannot put the required as True
+    # if delete the patient, the patient_id field in the appointment will be empty
+    # patient_id = fields.Many2one('hospital.patient', string="Patient", required=True, ondelete='set null')
     date_appointment = fields.Date(string="Appointment Date")
     note = fields.Text(string="Note")
     state = fields.Selection([
@@ -33,7 +39,9 @@ class HospitalAppointment(models.Model): #Creating new class by models.Model
     )
     # below is non-stored related field, in that no need to put string attribute again, to store we have to add store=True
     # date_of_birth = fields.Date(string="DOB", related='patient_id.date_of_birth')
-    date_of_birth = fields.Date(related='patient_id.date_of_birth', store=True)
+    date_of_birth = fields.Date(related='patient_id.date_of_birth', store=True,
+                                groups="om_hospital.group_hospital_doctors"
+    )
 
     @api.model_create_multi
     # Added below new 2 lines of code
